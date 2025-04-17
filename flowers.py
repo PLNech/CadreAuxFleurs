@@ -3,7 +3,7 @@
 """
 glitch_unicode_flowers_v10.py
 
-- Citation principale centrée en jaune.
+- Deux lignes de citation centrées en jaune.
 - Fragments de la prochaine citation dispersés hors centre.
 - Glitch autour.
 - Superposition d’ASCII fleurs MONOSPACE uniquement.
@@ -14,51 +14,56 @@ glitch_unicode_flowers_v10.py
 - Auteur et titre affichés FIXES (pas de clignotement) : auteur en haut gauche, titre en bas droite.
 - Pool unicode redivisé : UNICODE_POOL pour bruit, FLOWERS pour fleurs exotiques
 """
-import json, random, sys, time
+import json, random, sys, time, argparse
 
-# ── CONFIG ────────────────────────────────────────────────────────────────
-POEM_FILE       = "poemes.json"
-WIDTH, HEIGHT   = 70, 20             # dimensions du canvas
-total_duration  = 10.0               # durée de chaque citation (sec)
-FRAMES          = 50
-DELAY           = total_duration / FRAMES  # 3.2s par frame
-GLITCH_PROB     = 0.18               # probabilité de glitch
-FRAG_PROB       = 0.05               # probabilité de fragments de next ligne
-MAX_FLOWER_PROB = 0.09               # densité max de fleurs à la fin
-STAY_PROB       = 0.95               # 95% reste dans même poème
-EXPLOSION_FRAME = FRAMES - 10        # Frame où commence l'explosion florale
+# ── CONFIG ARGPARSE ───────────────────────────────────────────
+parser = argparse.ArgumentParser(description="Affichage poétique glitché à base de fleurs.")
+parser.add_argument("--width", type=int, default=50, help="Largeur du canvas")
+parser.add_argument("--height", type=int, default=20, help="Hauteur du canvas")
+parser.add_argument("--duration", type=float, default=30.0, help="Durée de chaque citation (en secondes)")
+parser.add_argument("--frames", type=int, default=50, help="Nombre de frames par citation")
+parser.add_argument("--max_flow", type=float, default=0.13, help="Densité maximale de fleurs à la fin")
+parser.add_argument("--file", type=str, default="poemes.json", help="Fichier JSON contenant les poèmes")
+args = parser.parse_args()
 
-UNICODE_POOL    = [                  # pool de bruit visuel (anciens symboles)
+POEM_FILE       = args.file
+WIDTH, HEIGHT   = args.width, args.height
+FRAMES          = args.frames
+total_duration  = args.duration
+DELAY           = total_duration / FRAMES
+GLITCH_PROB     = 0.18
+FRAG_PROB       = 0.05
+MAX_FLOWER_PROB = args.max_flow
+STAY_PROB       = 0.95
+EXPLOSION_FRAME = FRAMES - 3
+
+UNICODE_POOL    = [
     '◻', '◼', '◇', '◆', '○', '●', '□', '■',
-    '▢', '▣', '▤', '▥', '▦', '▧', '▨', '▩',
+    '◢', '◣', '◤', '◥', '▦', '▧', '▨', '▩',
     '▪', '▫', '⬛', '⬜', '◉', '◌', '◍', '◊'
 ]
 
-# Pool de fleurs graphiques variées (exotiques)
 FLOWERS = [
-    '⁕', '⚘', '𓁗', '𓁘', '𓆷', '𓆸', '𓆻',
-    '𓇖', '𓇗', '𓇘', '𓇙', '𓇬', '𓋇', '𓋈',
-#    '🌻', '🎕', '🎴', '💮', '🥀'
+    '⁅', '⚘', '𓅗', '𓅘', '𓆷', '𓆸', '𓆻',
+    '𓇖', '𓇗', '𓇘', '𓇙', '𓇬', '𓆇', '𓆈',
+    # '🌻', '🍕', '🎴', '🐮', '🪀'
 ]
 
-# ANSI escapes
 ANSI_CLEAR      = "\033[H\033[J"
 ANSI_YELLOW     = "\033[93m"
 ANSI_MAGENTA    = "\033[95m"
 ANSI_RESET      = "\033[0m"
 
-# ASCII art pour fin
 END_NOTICE = r"""
 Bonne Fête des Fleurs!
       _,-._
      / \_/ \
     >-(_)-<
      \_/ \_/
-       `-'
+       -'
 """
 
-# ── HELPERS ───────────────────────────────────────────────────────────────
-
+# ── HELPERS ────────────────────────────────────────────
 def clear():
     sys.stdout.write(ANSI_CLEAR)
     sys.stdout.flush()
@@ -165,4 +170,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
