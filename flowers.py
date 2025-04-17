@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -19,15 +18,15 @@ import json, random, sys, time
 
 # ── CONFIG ────────────────────────────────────────────────────────────────
 POEM_FILE       = "poemes.json"
-WIDTH, HEIGHT   = 50, 15             # dimensions du canvas
-total_duration  = 6.0               # durée de chaque citation (sec)
-FRAMES          = 30
+WIDTH, HEIGHT   = 70, 20             # dimensions du canvas
+total_duration  = 10.0               # durée de chaque citation (sec)
+FRAMES          = 50
 DELAY           = total_duration / FRAMES  # 3.2s par frame
 GLITCH_PROB     = 0.18               # probabilité de glitch
 FRAG_PROB       = 0.05               # probabilité de fragments de next ligne
-MAX_FLOWER_PROB = 0.15               # densité max de fleurs à la fin
+MAX_FLOWER_PROB = 0.09               # densité max de fleurs à la fin
 STAY_PROB       = 0.95               # 95% reste dans même poème
-EXPLOSION_FRAME = FRAMES - 3         # Frame où commence l'explosion florale
+EXPLOSION_FRAME = FRAMES - 10        # Frame où commence l'explosion florale
 
 UNICODE_POOL    = [                  # pool de bruit visuel (anciens symboles)
     '◻', '◼', '◇', '◆', '○', '●', '□', '■',
@@ -39,7 +38,7 @@ UNICODE_POOL    = [                  # pool de bruit visuel (anciens symboles)
 FLOWERS = [
     '⁕', '⚘', '𓁗', '𓁘', '𓆷', '𓆸', '𓆻',
     '𓇖', '𓇗', '𓇘', '𓇙', '𓇬', '𓋇', '𓋈',
-    '🌻', '🎕', '🎴', '💮', '🥀'
+#    '🌻', '🎕', '🎴', '💮', '🥀'
 ]
 
 # ANSI escapes
